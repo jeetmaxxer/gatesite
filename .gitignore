@@ -1,0 +1,11 @@
+# After Effects project files and renders (not part of the site)
+*.aep
+Auto-Save/
+Comp.mp4
+
+# old background video, no longer used by index.html
+gatesitebg.mp4
+
+# local tooling
+.vercel/
+.claude/

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>slab.cash</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <script>
+    // Not unlocked in this tab? Send people back to the gate.
+    try { if (sessionStorage.getItem("slab_access") !== "1") location.replace("index.html"); }
+    catch (_) { location.replace("index.html"); }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root { --muted: #8c8e94; --green: #4ade80; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: #050506;
+      color: #ececee;
+      font-family: "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      animation: in .8s ease both;
+    }
+    @keyframes in { from { opacity: 0; } }
+    main { text-align: center; max-width: 520px; }
+    .tag { font: 12px "JetBrains Mono", monospace; color: var(--green); letter-spacing: .04em; }
+    h1 { margin: 14px 0 10px; font-size: clamp(28px, 6vw, 44px); font-weight: 600; letter-spacing: -.02em; }
+    p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 15px; }
+    code { font-family: "JetBrains Mono", monospace; color: #c8c9cc; font-size: 13px; }
+    button {
+      margin-top: 28px; height: 31px; padding: 0 18px; border: 1px solid #2a2b2f; border-radius: 4px;
+      background: transparent; color: #c8c9cc; font: 12px "JetBrains Mono", monospace; cursor: pointer;
+    }
+    button:hover { border-color: #44464c; color: #fff; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="tag">● access granted</div>
+    <h1>welcome to slab.cash</h1>
+    <p>This is a placeholder for your real site. Replace <code>home.html</code> with your website, or set <code>DESTINATION</code> in <code>index.html</code> to its URL.</p>
+    <button type="button" onclick="sessionStorage.removeItem('slab_access'); location.href='index.html'">lock</button>
+  </main>
+</body>
+</html>
