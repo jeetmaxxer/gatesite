@@ -3,29 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>slab.cash — private access</title>
+  <title>slab.cash</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,400..600&family=Geist+Mono:wght@400..500&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #050506;
-      --line: rgba(255, 255, 255, 0.08);
-      --text: #ececee;
-      --muted: #8c8e94;
-      --green: #4ade80;
-      --green-text: #5fe08d;
-      --red: #f87171;
-      --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --ink: #f2f0eb;          /* warm off-white, the monitor's plastic */
+      --ink-2: #c4c2bc;        /* text people read */
+      --muted: #8f8d88;        /* labels and meta */
+      --line: rgba(242, 240, 235, .14);
+      --danger: #ff9b8f;
+      --r: 6px;
+      --sans: "Mona Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     }
 
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
     body {
       background: var(--bg);
-      color: var(--text);
+      color: var(--ink);
       font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
       overflow: hidden;
@@ -74,11 +74,10 @@
     /* ---------- login column (no box, sits right on the video) ---------- */
     .panel {
       position: relative;
-      width: min(431px, 100%);
-      padding: 26px 50px 30px;
+      width: min(360px, 100%);
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       animation: panel-in .9s cubic-bezier(.2,.7,.2,1) both;
     }
     @keyframes panel-in {
@@ -86,142 +85,44 @@
       to   { opacity: 1; transform: none; }
     }
 
-    .status-online {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font: 400 11.5px/1 var(--mono);
-      color: var(--muted);
-      letter-spacing: .02em;
-      margin-bottom: 28px;
-    }
-    .status-online .dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 8px rgba(74,222,128,.7);
-      animation: pulse 2.4s ease-in-out infinite;
-    }
-    @keyframes pulse { 50% { opacity: .45; } }
-
-    .brand {
-      font: 600 14px/1.2 var(--sans);
-      color: #fff;
-      letter-spacing: .005em;
-    }
-    .sub {
-      margin-top: 6px;
-      font: 400 14.5px/1.2 var(--mono);
-      color: #9b9da2;
-      letter-spacing: .04em;
-    }
-
     form {
       width: 100%;
-      margin-top: 30px;
       display: flex;
       flex-direction: column;
-      align-items: center;
     }
 
-    .prompt {
-      width: 100%;
-      height: 29px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      border: 1px solid rgba(74,222,128,.42);
-      background: rgba(22, 64, 36, .28);
-      color: var(--green-text);
-      font: 400 12px/1 var(--mono);
-      letter-spacing: .03em;
-      transition: color .25s, border-color .25s, background .25s;
-    }
-    .prompt .lock {
-      width: 13px;
-      height: 13px;
-      margin-top: -2px; /* sits on the text baseline */
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-    }
-    .prompt .lock rect { fill: currentColor; fill-opacity: .18; }
-    .prompt .lock .hole { stroke-width: 1.6; }
-    .prompt .lock .open { display: none; }
-    .prompt.granted .lock .shut { display: none; }   /* unlocks on the right password */
-    .prompt.granted .lock .open { display: inline; }
-    .prompt.denied {
-      color: var(--red);
-      border-color: rgba(248,113,113,.5);
-      background: rgba(80, 20, 20, .3);
-    }
-    .prompt.granted {
-      color: #86efac;
-      border-color: rgba(134,239,172,.75);
-      background: rgba(30, 90, 50, .38);
-      box-shadow: 0 0 18px rgba(74,222,128,.18);
+    .label {
+      margin-bottom: 8px;
+      font: 500 14px/1 var(--sans);
+      color: var(--ink-2);
     }
 
     /* solid fill + visible border so it reads as a text box over the busy video */
-    .field-wrap { position: relative; width: 100%; margin-top: 10px; }
+    .field-wrap { position: relative; width: 100%; }
     .field {
       display: block;
       width: 100%;
-      height: 39px;
+      height: 48px;
       padding: 0 14px;
-      border: 1px solid rgba(255,255,255,.24);
-      border-radius: 0;
-      background: rgba(12,13,15,.82);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-      box-shadow: inset 0 2px 6px rgba(0,0,0,.5);
-      color: var(--text);
-      font: 400 14px/1 var(--mono);
-      letter-spacing: .18em;
-      text-align: center;
-      caret-color: transparent; /* the blinking block below stands in for it */
+      border: 1px solid rgba(242,240,235,.22);
+      border-radius: var(--r);
+      background: rgba(10,10,11,.72);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: var(--ink);
+      font: 400 16px/1 var(--mono);
+      letter-spacing: .12em;
+      caret-color: transparent; /* the blinking bar below stands in for it */
       outline: none;
-      transition: border-color .2s, box-shadow .2s, background .2s;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .field::placeholder { color: #75777d; letter-spacing: .08em; opacity: 1; }
-    .field:hover { border-color: rgba(255,255,255,.36); }
+    .field:hover { border-color: rgba(242,240,235,.34); }
     .field:focus {
-      border-color: rgba(255,255,255,.55);
-      background: rgba(14,15,18,.9);
-      box-shadow: inset 0 2px 6px rgba(0,0,0,.5), 0 0 0 3px rgba(255,255,255,.08);
+      border-color: rgba(242,240,235,.72);
+      box-shadow: 0 0 0 3px rgba(242,240,235,.14);
     }
-    .field.shake { border-color: rgba(248,113,113,.55); }
-    .field-wrap:has(.field.shake) { animation: shake .42s cubic-bezier(.36,.07,.19,.97); }
-
-    /* blinking block cursor: an invisible copy of the text (or placeholder) pushes it to the end */
-    .field-overlay {
-      position: absolute;
-      inset: 0;
-      padding: 0 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      pointer-events: none;
-      font: 400 14px/1 var(--mono);
-      letter-spacing: .18em;
-      white-space: pre;
-    }
-    .field-overlay.overflow { justify-content: flex-end; }
-    .field-mirror { flex: none; color: transparent; }
-    .field-mirror.ph { letter-spacing: .08em; }
-    .field-caret {
-      flex: none;
-      width: 2px;
-      height: 16px;
-      margin: 0 -5px 0 3px; /* takes up no width, so the text stays centered like the input's */
-      background: var(--text); /* same color as the typed text */
-      animation: blink 1.05s steps(1) infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-    .field-wrap:has(.field:disabled) .field-caret { display: none; }
+    .field[aria-invalid="true"] { border-color: var(--danger); }
+    .field-wrap.shake { animation: shake .42s cubic-bezier(.36,.07,.19,.97); }
     @keyframes shake {
       15%, 85% { transform: translateX(-2px); }
       30%, 70% { transform: translateX(4px); }
@@ -229,43 +130,59 @@
       50% { transform: translateX(6px); }
     }
 
-    /* full-width, square and monospaced so it lines up with the prompt + field above */
-    .btn {
-      width: 100%;
-      height: 39px;
-      margin-top: 14px;
+    /* blinking bar cursor: an invisible copy of the typed dots pushes it to the end */
+    .field-overlay {
+      position: absolute;
+      inset: 0;
+      padding: 0 15px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border: 0;
-      border-radius: 0;
-      background: #e8e8e9;
-      color: #0a0b0c;
-      font: 500 12px/1 var(--mono);
-      letter-spacing: .16em;
-      cursor: pointer;
-      box-shadow: 0 10px 28px rgba(0,0,0,.4);
-      transition: background .18s, color .18s, box-shadow .18s, transform .1s, opacity .2s;
+      justify-content: flex-start;
+      overflow: hidden;
+      pointer-events: none;
+      font: 400 16px/1 var(--mono);
+      letter-spacing: .12em;
+      white-space: pre;
     }
-    .btn .arrow { font-size: 13px; letter-spacing: 0; transition: transform .18s; }
-    @media (hover: hover) {
-      .btn:hover {
-        background: var(--green);
-        box-shadow: 0 0 0 1px rgba(74,222,128,.55), 0 0 26px rgba(74,222,128,.3);
-      }
-      .btn:hover .arrow { transform: translateX(4px); }
+    .field-overlay.overflow { justify-content: flex-end; }
+    .field-mirror { flex: none; color: transparent; }
+    .field-caret {
+      flex: none;
+      width: 2px;
+      height: 18px;
+      margin-left: 1px;
+      background: var(--ink); /* same color as the typed text */
+      animation: blink 1.05s steps(1) infinite;
     }
-    .btn:active { transform: translateY(1px); }
-    .btn:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
-    .btn:disabled { opacity: .55; cursor: default; }
-    .btn.granted, .btn.granted:disabled {
-      opacity: 1;
-      background: var(--green);
-      box-shadow: 0 0 0 1px rgba(134,239,172,.75), 0 0 26px rgba(74,222,128,.35);
-    }
-    .btn.granted .arrow { transform: translateX(4px); }
+    @keyframes blink { 50% { opacity: 0; } }
+    .field-wrap:has(.field:disabled) .field-caret { display: none; }
 
+    .btn {
+      width: 100%;
+      height: 48px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: var(--r);
+      background: var(--ink);
+      color: #121211;
+      font: 600 16px/1 var(--sans);
+      cursor: pointer;
+      transition: background .15s, transform .12s, opacity .2s;
+    }
+    @media (hover: hover) {
+      .btn:hover { background: #fff; transform: translateY(-1px); }
+    }
+    .btn:active { transform: translateY(0) scale(.985); }
+    .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .btn:disabled { cursor: default; transform: none; }
+
+    .status {
+      min-height: 20px;
+      margin: 12px 0 0;
+      font: 400 14px/1.4 var(--sans);
+      color: var(--ink-2);
+    }
+    .status.error { color: var(--danger); }
 
     /* ---------- sound toggle ---------- */
     .sound {
@@ -276,28 +193,27 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      height: 28px;
-      padding: 0 11px;
+      height: 34px;
+      padding: 0 12px;
       border: 1px solid var(--line);
-      border-radius: 4px;
+      border-radius: var(--r);
       background: rgba(8, 9, 11, .55);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       color: var(--muted);
-      font: 400 11px/1 var(--mono);
-      letter-spacing: .03em;
+      font: 500 13px/1 var(--sans);
       cursor: pointer;
       transition: color .2s, border-color .2s;
     }
-    .sound:hover { color: var(--text); border-color: rgba(255,255,255,.16); }
-    .sound:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+    .sound:hover { color: var(--ink); border-color: rgba(242,240,235,.26); }
+    .sound:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
     .sound .bars { display: flex; align-items: flex-end; gap: 2px; height: 10px; }
     .sound .bars i {
       width: 2px; height: 3px;
       background: currentColor;
       transition: height .2s;
     }
-    .sound.on { color: var(--green-text); }
+    .sound.on { color: var(--ink); }
     .sound.on .bars i { animation: eq 1s ease-in-out infinite; }
     .sound.on .bars i:nth-child(2) { animation-delay: -.35s; }
     .sound.on .bars i:nth-child(3) { animation-delay: -.7s; }
@@ -323,8 +239,7 @@
 
     /* ---------- small screens: center the panel ---------- */
     @media (max-width: 720px) {
-      .stage { justify-content: center; padding: 16px; }
-      .panel { padding: 24px 22px 26px; }
+      .stage { justify-content: center; padding: 24px 20px; }
       .bg::after { background: rgba(0,0,0,.45); }
     }
     @media (max-height: 640px) {
@@ -338,36 +253,25 @@
 </head>
 <body>
   <div class="bg" aria-hidden="true">
-    <video id="bgv" src="gatesitebg2.mp4" autoplay muted loop playsinline preload="auto"></video>
+    <video id="bgv" src="gatesitebg3.mp4" autoplay muted loop playsinline preload="auto"></video>
   </div>
 
   <button class="sound" id="sound" type="button" aria-pressed="false" aria-label="Toggle sound">
-    <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundLabel">sound off</span>
+    <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="soundLabel">Sound off</span>
   </button>
 
   <main class="stage">
-    <section class="panel" aria-labelledby="brand">
-      <div class="status-online"><span class="dot"></span>online</div>
-
-      <div class="brand" id="brand">slab.cash</div>
-      <div class="sub">private access</div>
+    <section class="panel" id="panel" aria-labelledby="brand">
+      <h1 class="sr-only" id="brand">slab.cash</h1>
 
       <form id="gate" autocomplete="off" novalidate>
-        <div class="prompt" id="prompt" role="status" aria-live="polite">
-          <svg class="lock" viewBox="0 0 16 16" aria-hidden="true">
-            <path class="shackle shut" d="M5 7.5V5a3 3 0 0 1 6 0v2.5" />
-            <path class="shackle open" d="M5 7.5V5a3 3 0 0 1 5.8-1.1" />
-            <rect x="3" y="7.5" width="10" height="7" rx="1.5" />
-            <path class="hole" d="M8 10.3v1.6" />
-          </svg>
-          <span id="promptText">password protected</span>
-        </div>
-        <label for="pw" class="sr-only">Password</label>
-        <div class="field-wrap">
-          <input class="field" id="pw" name="pw" type="password" placeholder="type password here" autocomplete="current-password" spellcheck="false" autofocus />
+        <label for="pw" class="label">Password</label>
+        <div class="field-wrap" id="fieldWrap">
+          <input class="field" id="pw" name="pw" type="password" autocomplete="current-password" spellcheck="false" autofocus aria-describedby="status" />
           <div class="field-overlay" aria-hidden="true"><span class="field-mirror" id="pwMirror"></span><span class="field-caret"></span></div>
         </div>
-        <button class="btn" id="go" type="submit"><span>continue</span><span class="arrow" aria-hidden="true">→</span></button>
+        <button class="btn" id="go" type="submit">Enter site</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
       </form>
     </section>
   </main>
@@ -409,7 +313,7 @@
     const renderSound = (on) => {
       soundBtn.classList.toggle("on", on);
       soundBtn.setAttribute("aria-pressed", String(on));
-      soundLabel.textContent = on ? "sound on" : "sound off";
+      soundLabel.textContent = on ? "Sound on" : "Sound off";
     };
     const setSound = (on) => {
       if (on) {
@@ -496,50 +400,40 @@
     const form = document.getElementById("gate");
     const input = document.getElementById("pw");
     const btn = document.getElementById("go");
-    const prompt = document.getElementById("prompt");
-    const promptText = document.getElementById("promptText");
-    let resetTimer;
+    const fieldWrap = document.getElementById("fieldWrap");
+    const status = document.getElementById("status");
 
-    const PROMPT_DEFAULT = "password protected";
-    const setPrompt = (text, state) => {
-      promptText.textContent = text;
-      prompt.classList.remove("denied", "granted");
-      if (state) prompt.classList.add(state);
+    const setStatus = (text, isError) => {
+      status.textContent = text;
+      status.classList.toggle("error", !!isError);
+      if (isError) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
     };
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const value = input.value;
-      if (!value) { input.focus(); return; }
-      clearTimeout(resetTimer);
+      if (!value) { setStatus("Type the password first.", true); input.focus(); return; }
 
       if (sha256(value) === PASSWORD_HASH) {
-        setPrompt("access granted", "granted");
+        setStatus("Unlocking…");
         btn.disabled = true;
-        btn.classList.add("granted");
         input.disabled = true;
         try { sessionStorage.setItem("slab_access", "1"); } catch (_) {}
         setTimeout(() => { document.body.classList.add("leaving"); fadeSoundOut(800); }, 450);
         setTimeout(() => { window.location.href = DESTINATION; }, 1300);
       } else {
-        setPrompt("access denied", "denied");
-        input.classList.remove("shake");
-        void input.offsetWidth; // restart the animation
-        input.classList.add("shake");
+        setStatus("That password didn’t work. Try again.", true);
+        fieldWrap.classList.remove("shake");
+        void fieldWrap.offsetWidth; // restart the animation
+        fieldWrap.classList.add("shake");
         input.select();
-        resetTimer = setTimeout(() => {
-          setPrompt(PROMPT_DEFAULT);
-          input.classList.remove("shake");
-        }, 1800);
       }
     });
 
-    /* keep the block cursor right after the typed dots (or the placeholder when empty) */
+    /* keep the bar cursor right after the typed dots */
     const mirror = document.getElementById("pwMirror");
     const syncCaret = () => {
-      const v = input.value;
-      mirror.textContent = v ? "•".repeat([...v].length) : input.placeholder;
-      mirror.classList.toggle("ph", !v);
+      mirror.textContent = "\u2022".repeat([...input.value].length);
       const overlay = mirror.parentElement;
       overlay.classList.remove("overflow");
       if (overlay.scrollWidth > overlay.clientWidth) overlay.classList.add("overflow");
@@ -547,21 +441,18 @@
     syncCaret();
     document.fonts && document.fonts.ready.then(syncCaret);
 
+    // typing again clears the error
     input.addEventListener("input", () => {
       syncCaret();
-      if (prompt.classList.contains("denied")) {
-        clearTimeout(resetTimer);
-        setPrompt(PROMPT_DEFAULT);
-        input.classList.remove("shake");
-      }
+      if (status.classList.contains("error")) setStatus("");
     });
 
     // coming back via the browser's back button: reset the page
     window.addEventListener("pageshow", (e) => {
       if (e.persisted) {
         document.body.classList.remove("leaving");
-        btn.disabled = false; btn.classList.remove("granted"); input.disabled = false; input.value = ""; syncCaret();
-        setPrompt(PROMPT_DEFAULT);
+        btn.disabled = false; input.disabled = false; input.value = ""; syncCaret();
+        setStatus("");
         sound.volume = SOUND_VOLUME;
       }
     });

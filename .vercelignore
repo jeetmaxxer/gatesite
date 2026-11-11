@@ -3,8 +3,9 @@
 Auto-Save/
 Comp.mp4
 
-# old background video, no longer used by index.html
+# old background videos, no longer used by index.html
 gatesitebg.mp4
+gatesitebg2.mp4
 
 # local tooling
 .vercel/
